@@ -23,4 +23,4 @@
 #do we need a class for our joined migrations?
 
 
-# danira = Customer.create("Danira", 31)
+danira = Customer.create("Danira", 31)
