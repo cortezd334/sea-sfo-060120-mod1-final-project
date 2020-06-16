@@ -13,8 +13,8 @@
 ActiveRecord::Schema.define(version: 2020_06_15_191304) do
 
   create_table "customer_lists", force: :cascade do |t|
-    t.integer "customers_id"
-    t.integer "wine_clubs_id"
+    t.integer "customer_id"
+    t.integer "wine_club_id"
   end
 
   create_table "customers", force: :cascade do |t|
@@ -30,8 +30,8 @@ ActiveRecord::Schema.define(version: 2020_06_15_191304) do
   end
 
   create_table "wine_lists", force: :cascade do |t|
-    t.integer "wine_clubs_id"
-    t.integer "wines_id"
+    t.integer "wine_club_id"
+    t.integer "wine_id"
   end
 
   create_table "wines", force: :cascade do |t|
