@@ -20,14 +20,13 @@ ActiveRecord::Schema.define(version: 2020_06_15_191304) do
   create_table "customers", force: :cascade do |t|
     t.string "name"
     t.integer "age"
-    t.string "wine_preference"
-    t.string "origin_preference"
+    t.string "wine_preference", default: "none"
+    t.string "origin_preference", default: "none"
   end
 
   create_table "wine_clubs", force: :cascade do |t|
     t.string "name"
     t.string "location"
-    t.boolean "membership"
   end
 
   create_table "wine_lists", force: :cascade do |t|
