@@ -1,6 +1,4 @@
 class CreateCustomerLists < ActiveRecord::Migration[5.2]
-  belongs_to :customers
-  belongs_to :wine_clubs
   
   def change
     create_table :customer_lists do |t|
