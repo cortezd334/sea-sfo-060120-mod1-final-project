@@ -1,6 +1,4 @@
 class CreateWineLists < ActiveRecord::Migration[5.2]
-  belongs_to :wines
-  belongs_to :wine_clubs 
 
   def change
     create_table :wine_lists do |t|
