@@ -6,54 +6,67 @@ class CLI
     # end
 
     def age_verification
-        puts "We want you to enjoy our wines, but we don't encourage underage drinking! So we don't get in trouble, how old are you?"
-        input = gets.chomp.to_i
-        # @age = input
-        if input < 21
-            puts "Sorry, come back when you're older!!"
-        else 
+        puts "We want you to enjoy our wines, but we don't encourage underage drinking! So we don't get in trouble, how old are you? (Please enter a number)"
+        input = gets.chomp
+
+        if input == ""
+            age_verification
+        elsif input > "21"
             puts "Let's start drinking!"
+            welcome_user
+        elsif input < "21"
+            puts "Sorry, come back when you're older!!"
         end
     end
 
     def welcome_user
-        puts "Please enter your name: "
+        puts "\nPlease enter your name: "
         user = gets.chomp
         @customer = Customer.find_by(name: user)
         if @customer 
-            puts "Welcome back #{customer.name}! Let's get this party started!!"
+            puts "\nWelcome back #{customer.name}! Let's get this party started!!"
         else
             @customer = Customer.create(name: user)
             puts "Welcome #{customer.name}! Let's get this party started!!"
         end
+        display_preferences
     end
     
     def display_preferences
-        puts "Wine preference: "
+        puts "\nWine preference: "
         puts "\t" + customer.wine_preference
 
         puts "\nIs it time to update? (y/n)"
         input = gets.chomp
-        if input = "y" || "Y" || "yes" || "Yes" || "YES"
+        if input == "y" || input == "Y" || input == "yes" || input == "Yes" || input == "YES"
             puts "\nWhat do you prefer, red or white?"
             wine_pref_input = gets.chomp
-            if wine_pref_input = "red" || "Red" || "RED"
+            if wine_pref_input == "red" || wine_pref_input == "Red" || wine_pref_input == "RED"
                 customer.wine_preference = "Red"
                 puts "\nGot it! Wine preference updated: "
                 puts "\t" + customer.wine_preference
-            elsif wine_pref_input = "white" || "White" ||"WHITE"
+            elsif wine_pref_input == "white" || wine_pref_input == "White" || wine_pref_input == "WHITE"
                 customer.wine_preference = "White"
                 puts "\nGot it! Wine preference updated: "
                 puts "\t" + customer.wine_preference
             else
                 puts "Okay"
             end   
-        elsif input = "n" || "N" || "no" || "NO" || "No"
-            puts "Okie dokie"
+        elsif input == "n" || input == "N" || input == "no" || input == "NO" || input == "No"
+            puts "Okie dokie\n"
         end
+        main_menu
     end
 
     def main_menu
-
+        prompt1 = TTY::Prompt.new
+        prompt1.select("What would you like to do?", cycle: true) do |menu|
+            menu.choice "See Wine Clubs", -> {}
+            menu.choice "Wine Lists Based Off Of Vintage", -> {}
+            menu.choice "Wine Lists Based Off Of My Wine Preference", -> {}
+            menu.choice "My Wine Preference", -> {display_preferences} #possibly edit method so that only update/no questions
+            menu.choice "My Favorite Wine Lists", -> {}
+            #w/in ability to add/delete wine lists to fav
+        end
     end
 end
