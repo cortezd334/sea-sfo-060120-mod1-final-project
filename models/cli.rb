@@ -61,7 +61,7 @@ class CLI
     def main_menu
         prompt1 = TTY::Prompt.new
         prompt1.select("What would you like to do?", cycle: true) do |menu|
-            menu.choice "See Wine Clubs", -> {}
+            menu.choice "See Wine Clubs", -> {display_wine_clubs}
             menu.choice "Wine Lists Based Off Of Vintage", -> {}
             menu.choice "Wine Lists Based Off Of My Wine Preference", -> {}
             menu.choice "My Wine Preference", -> {display_preferences} #possibly edit method so that only update/no questions
@@ -69,4 +69,14 @@ class CLI
             #w/in ability to add/delete wine lists to fav
         end
     end
+
+    def display_wine_clubs
+        wine_club_list = WineClub.select(:name)
+        wine_club_list = wine_club_list.collect { |club| 
+            club.name }
+        wine_club_list = wine_club_list.join(", ")
+        # wine_club_list = wine_club_list.each {|names| names + "\n"}
+        puts "Here are a list of Wine Clubs \n \n#{wine_club_list}"
+    end
+    #if time permits, come back to make into list rather than paragraph
 end
