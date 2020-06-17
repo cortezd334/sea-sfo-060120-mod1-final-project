@@ -5,8 +5,10 @@ app = CLI.new
 
 app.age_verification
 
-app.welcome_user
+# app.welcome_user
 
-app.display_preferences 
+# app.display_preferences 
+
+# app.main_menu
 
 binding.pry

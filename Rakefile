@@ -8,7 +8,7 @@ end
 
 desc "Starts a console session"
 task :console do 
-    ActiveRecord::Base.logger = Logger.new(STDOUT)    
+    ActiveRecord::Base.logger = nil#Logger.new(STDOUT)    
     binding.pry
 end
 
