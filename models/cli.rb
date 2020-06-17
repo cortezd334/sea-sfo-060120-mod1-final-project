@@ -6,7 +6,7 @@ class CLI
     # end
 
     def age_verification
-        puts "We want you to enjoy our wines, but we don't encourage underage drinking! So we don't get sued, how old are you?"
+        puts "We want you to enjoy our wines, but we don't encourage underage drinking! So we don't get in trouble, how old are you?"
         input = gets.chomp.to_i
         # @age = input
         if input < 21
@@ -32,23 +32,28 @@ class CLI
         puts "Wine preference: "
         puts "\t" + customer.wine_preference
 
-        puts "Is it time to update? (y/n)"
+        puts "\nIs it time to update? (y/n)"
         input = gets.chomp
-        if input == "y" || "Y" || "yes" || "Yes" || "YES"
-            #wine preference is update and displayed
+        if input = "y" || "Y" || "yes" || "Yes" || "YES"
             puts "\nWhat do you prefer, red or white?"
             wine_pref_input = gets.chomp
             if wine_pref_input = "red" || "Red" || "RED"
                 customer.wine_preference = "Red"
-                puts "\nGot it! Wine preference: "
+                puts "\nGot it! Wine preference updated: "
                 puts "\t" + customer.wine_preference
             elsif wine_pref_input = "white" || "White" ||"WHITE"
                 customer.wine_preference = "White"
-                puts "\nGot it! Wine preference: "
+                puts "\nGot it! Wine preference updated: "
                 puts "\t" + customer.wine_preference
-            end
-        elsif input == "n" || "N" || "no" || "NO" || "No"
+            else
+                puts "Okay"
+            end   
+        elsif input = "n" || "N" || "no" || "NO" || "No"
             puts "Okie dokie"
         end
+    end
+
+    def main_menu
+
     end
 end
