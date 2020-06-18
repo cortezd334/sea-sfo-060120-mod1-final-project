@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_15_191304) do
+ActiveRecord::Schema.define(version: 2020_06_18_032422) do
 
   create_table "customer_lists", force: :cascade do |t|
     t.integer "customer_id"
@@ -22,6 +22,11 @@ ActiveRecord::Schema.define(version: 2020_06_15_191304) do
     t.integer "age"
     t.string "wine_preference", default: "None"
     t.string "origin_preference", default: "None"
+  end
+
+  create_table "favorites", force: :cascade do |t|
+    t.integer "customer_id"
+    t.integer "wine_id"
   end
 
   create_table "wine_clubs", force: :cascade do |t|
