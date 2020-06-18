@@ -1,4 +1,4 @@
 class CustomerList < ActiveRecord::Base
-    belongs_to :customers
-    belongs_to :wine_clubs
+    belongs_to :customer
+    belongs_to :wine_club
 end

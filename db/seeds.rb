@@ -167,3 +167,7 @@ l_maison_w = WineList.create(wine_club_id: maison.id, wine_id: maison_white.id)
 l_domaine_r = WineList.create(wine_club_id: domaine.id, wine_id: domaine_red.id)
 l_domaine_w = WineList.create(wine_club_id: domaine.id, wine_id: domaine_white.id)
 
+#favorites
+fav1 = Favorite.create(customer_id: zana.id, wine_id: artesa_white.id)
+fav2 = Favorite.create(customer_id: danira.id, wine_id: domaine_red.id)
+fav3 = Favorite.create(customer_id: danira.id, wine_id: luna_red.id)

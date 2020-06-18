@@ -64,7 +64,7 @@ class CLI
             menu.choice "Wine Lists Based Off Of Vintage", -> {vintage}
             menu.choice "Wine Lists Based Off Of My Wine Preference", -> {wine_preference}
             menu.choice "My Wine Preference", -> {display_preferences} #possibly edit method so that only update/no questions
-            menu.choice "My Favorite Wine Lists", -> {}
+            menu.choice "My Favorite Wine Lists", -> {fav_menu}
             #w/in ability to add/delete wine lists to fav
         end
     end
@@ -72,21 +72,21 @@ class CLI
     def display_wine_clubs
         prompt2 = TTY::Prompt.new
         prompt2.multi_select("To View Wine Lists Select As Many Wine Clubs As You Like...We're Not Judging ;) \n", cycle: true, echo: false) do |menu|
-            menu.choice "DeLille Cellars", -> {helper(16)}
-            menu.choice "Chateau Ste. Michelle", -> {helper(17)}
-            menu.choice "Aspenwood Cellars", -> {helper(18)}
-            menu.choice "Damsel Cellars", -> {helper(19)}
-            menu.choice "Haystack Needle Winery", -> {helper(20)}
-            menu.choice "Artesa Vineyards", -> {helper(21)}
-            menu.choice "Monticello Vineyards", -> {helper(22)}
-            menu.choice "Chimney Rock Wineryey", -> {helper(23)}
-            menu.choice "Luna Vineyards", -> {helper(24)}
-            menu.choice "Beringer Vineyards", -> {helper(25)}
-            menu.choice "Chateau de Pommard", -> {helper(26)}
-            menu.choice "Chateau Marsannay", -> {helper(27)}
-            menu.choice "Chateau de la Cree", -> {helper(28)}
-            menu.choice "Maison Albert Bichot", -> {helper(29)}
-            menu.choice "Domaine Comte Senard", -> {helper(30)}
+            menu.choice "DeLille Cellars", -> {helper(1)}
+            menu.choice "Chateau Ste. Michelle", -> {helper(2)}
+            menu.choice "Aspenwood Cellars", -> {helper(3)}
+            menu.choice "Damsel Cellars", -> {helper(4)}
+            menu.choice "Haystack Needle Winery", -> {helper(5)}
+            menu.choice "Artesa Vineyards", -> {helper(6)}
+            menu.choice "Monticello Vineyards", -> {helper(7)}
+            menu.choice "Chimney Rock Wineryey", -> {helper(8)}
+            menu.choice "Luna Vineyards", -> {helper(9)}
+            menu.choice "Beringer Vineyards", -> {helper(10)}
+            menu.choice "Chateau de Pommard", -> {helper(11)}
+            menu.choice "Chateau Marsannay", -> {helper(12)}
+            menu.choice "Chateau de la Cree", -> {helper(13)}
+            menu.choice "Maison Albert Bichot", -> {helper(14)}
+            menu.choice "Domaine Comte Senard", -> {helper(15)}
         end
     end
 
@@ -142,22 +142,43 @@ class CLI
 
     end
 
-    def fav_wine_lists
+    def fav_menu
+        prompt4 = TTY::Prompt.new
+        prompt4.select("\nMy Favorite\n", cycle: true, echo: false) do |menu|
+            menu.choice "View My Favorite Wine Lists", -> {display_fav}
+            menu.choice "HOW DO WE ADD OUTSIDE OF METHODS? Add A Wine List To My Favorite", -> {}
+            menu.choice "Delete A Wine List From My Favorite", -> {delete_fav}
+        end
+    end
+
+    def display_fav
+        wineids = Favorite.where(customer_id: @customer).pluck(:wine_id)
+        winenames = Wine.where(id: wineids).pluck(:name)
+        clubname = WineClub.where(id: @customer).pluck(:name).join(" ")
         
-        #***we need to keep this linked to customer!
+        puts clubname + ":" 
+        puts "\n"
+        puts winenames
+        puts "\n"
+        puts "\n"
+    end
+        
+    # def fav_wine_lists(input)
+    #     wineids = WineList.where(wine_club_id: input).pluck(:wine_id) # returns wine ids
+    #     winenames = Wine.where(id: wineids).pluck(:name) # returns wines names
+    #     clubname = WineClub.where(id: input).pluck(:name).join(" ")
+
+    # end
+            
+            #***we need to keep this linked to customer!
         #we want to be able to shovel in a wine list
         #is there a way to keep these seperate (at a glance)
         #we also need a way to save a wine list to array when viewing
 
-        Customer.new_column << helper(input)
+        # Customer.new_column << helper(input)
 
+    def delete_fav
+        display_fav
+        binding.pry
     end
-    # def come_back_to_this_code
-    #     wine_club_list = WineClub.select(:name)
-    #     wine_club_list = wine_club_list.collect {|club| club.name}
-    #     wine_club_list = wine_club_list.join(", ")
-    #     # wine_club_list = wine_club_list.each {|names| names + "\n"}
-    #     puts "Here are a list of Wine Clubs \n \n#{wine_club_list}"
-    # end
-    #if time permits, come back to make into list rather than paragraph
 end
