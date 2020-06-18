@@ -92,13 +92,13 @@ class CLI
         winenames = Wine.where(id: wineids).pluck(:name)
         clubname = WineClub.where(id: input).pluck(:name).join(" ")
 
-        puts clubname +":"
+        puts clubname + ":"
         puts "\n"
         puts winenames
         puts "\n"
         puts "\n"
 
-        #fav_wine_list
+        get_input_to_add
     end
 
     def vintage
@@ -153,53 +153,49 @@ class CLI
         winenames = Wine.where(id: wineids).pluck(:name)
         clubname = WineClub.where(id: @customer).pluck(:name)
         # clubname = @customer.wine_clubs
-        # winenames
+        #my_wines = @customer.wines
+        #my_wines = my_wines.collect {|wines| wines.name}
  
         puts clubname 
         puts "\n"
-        puts winenames
+        puts winenames #my_wines
         puts "\n"
         puts "\n"
     end
         
-    def fav_wine_lists
-#use wine id from wine list to add to favorite join
-        custfav = @customer.wine_clubs  # returns wine clubs objext
-        listofwines = custfav.collect {|club| club.wines.pluck(:id)} 
-        listofwines = listofwines.flatten #returns an array of ids of wine from wineclubs->customer
+# WineClub.first.wine_ids
+
+ # ****how we add*****       
+    #     for green in listofwines do
+    #         puts Favorite.create(customer_id: @customer.id, wine_id: green)
+    #     end
+    #     # Favorite.create(customer_id: @customer.id, wine_id: listofwines)
+
+    def get_input_to_add
         
-WineClub.first.wine_ids
-        # blue = listofwines.collect {|id| red = id
-        #         red.collect {|blah| 
-        #             Favorite.create(customer_id: @customer.id, wine_id: blah)
-        #             } 
-        #  }
-         
-        for green in listofwines do
+        prompt5 = TTY::Prompt.new
+        prompt5.select("Would You Like To Add A Wine List To Your Favorites", cycle: true, echo:false ) do |menu|
+            menu.choice "Yes", -> {add_to_fav}
+            menu.choice "No, Return To Main Menu", -> {main_menu}
+        end
+    end
+
+    def add_to_fav
+        puts "We're Not In School Anymore But You Still Need To Check Your Spelling"
+        puts "Enter Wine Club Below:"
+
+        input = gets.chomp
+
+        blue = WineClub.find_by(name: input)
+        blue = blue.wine_ids
+
+        for green in blue do
             puts Favorite.create(customer_id: @customer.id, wine_id: green)
         end
-        # Favorite.create(customer_id: @customer.id, wine_id: listofwines)
-        
-        binding.pry
     end
-    #array = []
-    #array << helper
-    #which will give us indexes which we can then delete
-    
-    #     wineids = WineList.where(wine_club_id: input).pluck(:wine_id) # returns wine ids
-    #     winenames = Wine.where(id: wineids).pluck(:name) # returns wines names
-    #     clubname = WineClub.where(id: input).pluck(:name).join(" ")
-            
-            #***we need to keep this linked to customer!
-        #we want to be able to shovel in a wine list
-        #is there a way to keep these seperate (at a glance)
-        #we also need a way to save a wine list to array when viewing
-
-        # Customer.new_column << helper(input)
 
     def delete_fav
         display_fav
-        binding.pry
     end
 
     def exit
