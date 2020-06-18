@@ -1,20 +1,16 @@
 class CLI
-    attr_accessor :customer, :age
-
-    # def assign_input_to_age
-    #     @age 
-    # end
+    attr_accessor :customer
 
     def age_verification
         puts "We want you to enjoy our wines, but we don't encourage underage drinking! So we don't get in trouble, how old are you? (Please enter a number)"
-        input = gets.chomp
+        input = gets.chomp.to_i
 
-        if input == ""
+        if input == 0
             age_verification
-        elsif input > "21"
+        elsif input > 21
             puts "Let's start drinking!"
             welcome_user
-        elsif input < "21"
+        elsif input < 21
             puts "Sorry, come back when you're older!!"
         end
     end
@@ -29,7 +25,7 @@ class CLI
             @customer = Customer.create(name: user)
             puts "Welcome #{customer.name}! Let's get this party started!!"
         end
-        display_preferences
+        main_menu
     end
     
     def display_preferences
@@ -66,6 +62,7 @@ class CLI
             menu.choice "My Wine Preference", -> {display_preferences} #possibly edit method so that only update/no questions
             menu.choice "My Favorite Wine Lists", -> {fav_menu}
             #w/in ability to add/delete wine lists to fav
+            menu.choice "Exit", -> {exit}
         end
     end
 
@@ -94,8 +91,8 @@ class CLI
         wineids = WineList.where(wine_club_id: input).pluck(:wine_id)
         winenames = Wine.where(id: wineids).pluck(:name)
         clubname = WineClub.where(id: input).pluck(:name).join(" ")
-        
-        puts clubname + ":" 
+
+        puts clubname +":"
         puts "\n"
         puts winenames
         puts "\n"
@@ -139,15 +136,15 @@ class CLI
             puts "\n We Don't Want To Overwhelm You, Stick To Red Or White"
             wine_preference
         end
-
     end
 
     def fav_menu
         prompt4 = TTY::Prompt.new
-        prompt4.select("\nMy Favorite\n", cycle: true, echo: false) do |menu|
+        prompt4.select("\nMy Favorite Wine Lists\n", cycle: true, echo: false) do |menu|
             menu.choice "View My Favorite Wine Lists", -> {display_fav}
-            menu.choice "HOW DO WE ADD OUTSIDE OF METHODS? Add A Wine List To My Favorite", -> {}
+            menu.choice "Add A Wine List To My Favorite", -> {fav_wine_lists}
             menu.choice "Delete A Wine List From My Favorite", -> {delete_fav}
+            menu.choice "Go Back To Main Menu?", -> {main_menu}
         end
     end
 
@@ -155,17 +152,36 @@ class CLI
         wineids = Favorite.where(customer_id: @customer).pluck(:wine_id)
         winenames = Wine.where(id: wineids).pluck(:name)
         clubname = WineClub.where(id: @customer).pluck(:name)
-        
-        puts clubname + ":" 
+        # clubname = @customer.wine_clubs
+        # winenames
+ 
+        puts clubname 
         puts "\n"
         puts winenames
         puts "\n"
         puts "\n"
-        binding.pry
     end
         
-    # def fav_wine_lists(input) #will become our add method
-
+    def fav_wine_lists
+#use wine id from wine list to add to favorite join
+        custfav = @customer.wine_clubs  # returns wine clubs objext
+        listofwines = custfav.collect {|club| club.wines.pluck(:id)} 
+        listofwines = listofwines.flatten #returns an array of ids of wine from wineclubs->customer
+        
+WineClub.first.wine_ids
+        # blue = listofwines.collect {|id| red = id
+        #         red.collect {|blah| 
+        #             Favorite.create(customer_id: @customer.id, wine_id: blah)
+        #             } 
+        #  }
+         
+        for green in listofwines do
+            puts Favorite.create(customer_id: @customer.id, wine_id: green)
+        end
+        # Favorite.create(customer_id: @customer.id, wine_id: listofwines)
+        
+        binding.pry
+    end
     #array = []
     #array << helper
     #which will give us indexes which we can then delete
@@ -173,8 +189,6 @@ class CLI
     #     wineids = WineList.where(wine_club_id: input).pluck(:wine_id) # returns wine ids
     #     winenames = Wine.where(id: wineids).pluck(:name) # returns wines names
     #     clubname = WineClub.where(id: input).pluck(:name).join(" ")
-
-    # end
             
             #***we need to keep this linked to customer!
         #we want to be able to shovel in a wine list
@@ -185,6 +199,11 @@ class CLI
 
     def delete_fav
         display_fav
+        binding.pry
+    end
+
+    def exit
+        puts "See You Next Time"
         binding.pry
     end
 end
