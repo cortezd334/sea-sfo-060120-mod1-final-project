@@ -154,16 +154,22 @@ class CLI
     def display_fav
         wineids = Favorite.where(customer_id: @customer).pluck(:wine_id)
         winenames = Wine.where(id: wineids).pluck(:name)
-        clubname = WineClub.where(id: @customer).pluck(:name).join(" ")
+        clubname = WineClub.where(id: @customer).pluck(:name)
         
         puts clubname + ":" 
         puts "\n"
         puts winenames
         puts "\n"
         puts "\n"
+        binding.pry
     end
         
-    # def fav_wine_lists(input)
+    # def fav_wine_lists(input) #will become our add method
+
+    #array = []
+    #array << helper
+    #which will give us indexes which we can then delete
+    
     #     wineids = WineList.where(wine_club_id: input).pluck(:wine_id) # returns wine ids
     #     winenames = Wine.where(id: wineids).pluck(:name) # returns wines names
     #     clubname = WineClub.where(id: input).pluck(:name).join(" ")
