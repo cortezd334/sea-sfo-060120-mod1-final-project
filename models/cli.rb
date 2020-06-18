@@ -68,7 +68,7 @@ class CLI
 
     def display_wine_clubs
         prompt2 = TTY::Prompt.new
-        prompt2.multi_select("To View Wine Lists Select As Many Wine Clubs As You Like...We're Not Judging ;) \n", cycle: true, echo: false) do |menu|
+        prompt2.select("To View A Wine List Select A Wine Club\n", cycle: true, echo: false) do |menu|
             menu.choice "DeLille Cellars", -> {helper(1)}
             menu.choice "Chateau Ste. Michelle", -> {helper(2)}
             menu.choice "Aspenwood Cellars", -> {helper(3)}
@@ -86,6 +86,7 @@ class CLI
             menu.choice "Domaine Comte Senard", -> {helper(15)}
         end
     end
+    # Wine Club As You Like...We're Not Judging ;)
 
     def helper(input)
         wineids = WineList.where(wine_club_id: input).pluck(:wine_id)
@@ -113,6 +114,7 @@ class CLI
        if input == year
             puts "NAME, RED/WHITE, PRICE, ORIGIN"
             puts wine ##need a way to fix prints on screen
+            main_menu
         else
             puts "\n Oops! Looks Like This Is Out Of Your Price Range"
             vintage
@@ -132,6 +134,7 @@ class CLI
         if input == rorw
             puts "NAME, RED/WHITE, PRICE, ORIGIN"
             puts wine ##need a way to fix prints on screen
+            main_menu
         else
             puts "\n We Don't Want To Overwhelm You, Stick To Red Or White"
             wine_preference
@@ -142,7 +145,6 @@ class CLI
         prompt4 = TTY::Prompt.new
         prompt4.select("\nMy Favorite Wine Lists\n", cycle: true, echo: false) do |menu|
             menu.choice "View My Favorite Wine Lists", -> {display_fav}
-            menu.choice "Add A Wine List To My Favorite", -> {fav_wine_lists}
             menu.choice "Delete A Wine List From My Favorite", -> {delete_fav}
             menu.choice "Go Back To Main Menu?", -> {main_menu}
         end
@@ -161,28 +163,22 @@ class CLI
         puts winenames #my_wines
         puts "\n"
         puts "\n"
+        fav_menu
     end
         
-# WineClub.first.wine_ids
-
- # ****how we add*****       
-    #     for green in listofwines do
-    #         puts Favorite.create(customer_id: @customer.id, wine_id: green)
-    #     end
-    #     # Favorite.create(customer_id: @customer.id, wine_id: listofwines)
-
     def get_input_to_add
         
         prompt5 = TTY::Prompt.new
-        prompt5.select("Would You Like To Add A Wine List To Your Favorites", cycle: true, echo:false ) do |menu|
+        prompt5.select("\nWould You Like To Add A Wine List To Your Favorites\n", cycle: true, echo:false ) do |menu|
             menu.choice "Yes", -> {add_to_fav}
-            menu.choice "No, Return To Main Menu", -> {main_menu}
+            menu.choice "No, Return To Wine Clubs", -> {display_wine_clubs}
+            menu.choice "Return To Main Menu", -> {main_menu}
         end
     end
 
     def add_to_fav
-        puts "We're Not In School Anymore But You Still Need To Check Your Spelling"
-        puts "Enter Wine Club Below:"
+        puts "\nWe're Not In School Anymore But You Still Need To Check Your Spelling"
+        puts "\nEnter Wine Club Below:"
 
         input = gets.chomp
 
@@ -192,10 +188,19 @@ class CLI
         for green in blue do
             puts Favorite.create(customer_id: @customer.id, wine_id: green)
         end
+        main_menu
     end
 
     def delete_fav
+        puts "Which Wine Would You Like To Delete \n"
         display_fav
+
+        puts "\nRemember To Check Your Spelling\n"
+        input = gets.chomp
+
+        blue = Wine.find_by(name: input)
+        green = Favorite.where(customer_id: @customer, wine_id: blue)
+        green[0].destroy
     end
 
     def exit
