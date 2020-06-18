@@ -32,35 +32,34 @@ class CLI
         display_preferences
     end
     
-    def display_preferences #we will make a menu and have red, white, delete
-        puts "\nWine preference: "
-        puts "\t" + customer.wine_preference
-
-        puts "\nIs it time to update? (y/n)"
-        input = gets.chomp
-        if input == "y" || input == "Y" || input == "yes" || input == "Yes" || input == "YES"
-            puts "\nWhat do you prefer, red or white?"
-            wine_pref_input = gets.chomp
-            if wine_pref_input == "red" || wine_pref_input == "Red" || wine_pref_input == "RED"
-                customer.wine_preference = "Red"
-                puts "\nGot it! Wine preference updated: "
-                puts "\t" + customer.wine_preference
-            elsif wine_pref_input == "white" || wine_pref_input == "White" || wine_pref_input == "WHITE"
-                customer.wine_preference = "White"
-                puts "\nGot it! Wine preference updated: "
-                puts "\t" + customer.wine_preference
-            else
-                puts "Okay"
-            end   
-        elsif input == "n" || input == "N" || input == "no" || input == "NO" || input == "No"
-            puts "Okie dokie\n"
+    def display_preferences
+        prompt3 = TTY::Prompt.new
+        prompt3.select("\n Wine Preferences: #{customer.wine_preference}", cycle: true, echo:false) do |menu|
+            menu.choice "Change Wine Preference To Red", -> {change_wine_red}
+            menu.choice "Change Wine Preference To White", -> {change_wine_white}
+            menu.choice "Delete Wine Preference", -> {delete_wine}
+            menu.choice "Go Back To Main Menu?", -> {main_menu}
         end
-        main_menu
+    end
+
+    def change_wine_red
+        customer.wine_preference = "Red"
+        display_preferences
+    end
+
+    def change_wine_white
+        customer.wine_preference = "White"
+        display_preferences
+    end
+
+    def delete_wine
+        customer.wine_preference = "None"
+        display_preferences
     end
 
     def main_menu
         prompt1 = TTY::Prompt.new
-        prompt1.select("What would you like to do?", cycle: true) do |menu|
+        prompt1.select("What would you like to do?", cycle: true, echo:false) do |menu|
             menu.choice "See Wine Clubs", -> {display_wine_clubs}
             menu.choice "Wine Lists Based Off Of Vintage", -> {vintage}
             menu.choice "Wine Lists Based Off Of My Wine Preference", -> {wine_preference}
