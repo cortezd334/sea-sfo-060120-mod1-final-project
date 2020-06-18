@@ -32,7 +32,7 @@ class CLI
         display_preferences
     end
     
-    def display_preferences
+    def display_preferences #we will make a menu and have red, white, delete
         puts "\nWine preference: "
         puts "\t" + customer.wine_preference
 
@@ -101,6 +101,8 @@ class CLI
         puts winenames
         puts "\n"
         puts "\n"
+
+        #fav_wine_list
     end
 
     def vintage
@@ -142,11 +144,14 @@ class CLI
     end
 
     def fav_wine_lists
-        fave_lists = []
+        
         #***we need to keep this linked to customer!
         #we want to be able to shovel in a wine list
         #is there a way to keep these seperate (at a glance)
         #we also need a way to save a wine list to array when viewing
+
+        Customer.new_column << helper(input)
+
     end
     # def come_back_to_this_code
     #     wine_club_list = WineClub.select(:name)
