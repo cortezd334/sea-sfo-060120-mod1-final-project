@@ -59,9 +59,8 @@ class CLI
             menu.choice "See Wine Clubs", -> {display_wine_clubs}
             menu.choice "Wine Lists Based Off Of Vintage", -> {vintage}
             menu.choice "Wine Lists Based Off Of My Wine Preference", -> {wine_preference}
-            menu.choice "My Wine Preference", -> {display_preferences} #possibly edit method so that only update/no questions
+            menu.choice "My Wine Preference", -> {display_preferences}
             menu.choice "My Favorite Wine Lists", -> {fav_menu}
-            #w/in ability to add/delete wine lists to fav
             menu.choice "Exit", -> {exit}
         end
     end
@@ -86,7 +85,6 @@ class CLI
             menu.choice "Domaine Comte Senard", -> {helper(15)}
         end
     end
-    # Wine Club As You Like...We're Not Judging ;)
 
     def helper(input)
         wineids = WineList.where(wine_club_id: input).pluck(:wine_id)
@@ -98,7 +96,7 @@ class CLI
         puts winenames
         puts "\n"
         puts "\n"
-
+        
         get_input_to_add
     end
 
@@ -110,10 +108,12 @@ class CLI
         year = year.collect {|wine| wine.vintage}.uniq
         year = year.join("")
         wine = Wine.where(vintage: input).pluck(:name, :grape, :price, :origin)
-        # binding.pry
-       if input == year
+        
+        if input == year
             puts "NAME, RED/WHITE, PRICE, ORIGIN"
-            puts wine ##need a way to fix prints on screen
+            for i in wine do
+                puts i.join(", ")
+            end 
             main_menu
         else
             puts "\n Oops! Looks Like This Is Out Of Your Price Range"
@@ -130,10 +130,12 @@ class CLI
         rorw = rorw.collect {|wine| wine.grape}.uniq
         rorw = rorw.join("")
         wine = Wine.where(grape: input).pluck(:name, :vintage, :price, :origin)
-        # binding.pry
+        
         if input == rorw
             puts "NAME, RED/WHITE, PRICE, ORIGIN"
-            puts wine ##need a way to fix prints on screen
+            for i in wine do
+                puts i.join(", ")
+            end 
             main_menu
         else
             puts "\n We Don't Want To Overwhelm You, Stick To Red Or White"
@@ -154,20 +156,16 @@ class CLI
         wineids = Favorite.where(customer_id: @customer).pluck(:wine_id)
         winenames = Wine.where(id: wineids).pluck(:name)
         clubname = WineClub.where(id: @customer).pluck(:name)
-        # clubname = @customer.wine_clubs
-        #my_wines = @customer.wines
-        #my_wines = my_wines.collect {|wines| wines.name}
  
         puts clubname 
         puts "\n"
-        puts winenames #my_wines
+        puts winenames
         puts "\n"
         puts "\n"
         fav_menu
     end
         
     def get_input_to_add
-        
         prompt5 = TTY::Prompt.new
         prompt5.select("\nWould You Like To Add A Wine List To Your Favorites\n", cycle: true, echo:false ) do |menu|
             menu.choice "Yes", -> {add_to_fav}
@@ -184,10 +182,15 @@ class CLI
 
         blue = WineClub.find_by(name: input)
         blue = blue.wine_ids
-
-        for green in blue do
-            puts Favorite.create(customer_id: @customer.id, wine_id: green)
-        end
+        
+        if input != blue
+            add_to_fav
+        else 
+            purple = for green in blue do
+                Favorite.create(customer_id: @customer.id, wine_id: green) 
+            end
+            puts Wine.where(id: purple).pluck(:name)
+        end 
         main_menu
     end
 
