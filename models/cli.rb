@@ -12,6 +12,7 @@ class CLI
             welcome_user
         elsif input < 21
             puts "Sorry, come back when you're older!!"
+            age_verification
         end
     end
 
@@ -30,7 +31,7 @@ class CLI
     
     def display_preferences
         prompt3 = TTY::Prompt.new
-        prompt3.select("\n Wine Preferences: #{customer.wine_preference}", cycle: true, echo:false) do |menu|
+        prompt3.select("\n Wine Preferences: \n   #{customer.wine_preference}", cycle: true, echo:false) do |menu|
             menu.choice "Change Wine Preference To Red", -> {change_wine_red}
             menu.choice "Change Wine Preference To White", -> {change_wine_white}
             menu.choice "Delete Wine Preference", -> {delete_wine}
@@ -55,7 +56,7 @@ class CLI
 
     def main_menu
         prompt1 = TTY::Prompt.new
-        prompt1.select("What would you like to do?", cycle: true, echo:false) do |menu|
+        prompt1.select("\nWhat would you like to do?", cycle: true, echo:false) do |menu|
             menu.choice "See Wine Clubs", -> {display_wine_clubs}
             menu.choice "Wine Lists Based Off Of Vintage", -> {vintage}
             menu.choice "Wine Lists Based Off Of My Wine Preference", -> {wine_preference}
@@ -147,7 +148,7 @@ class CLI
         prompt4 = TTY::Prompt.new
         prompt4.select("\nMy Favorite Wine Lists\n", cycle: true, echo: false) do |menu|
             menu.choice "View My Favorite Wine Lists", -> {display_fav}
-            menu.choice "Delete A Wine List From My Favorite", -> {delete_fav}
+            menu.choice "Delete A Wine From My Favorite", -> {delete_fav}
             menu.choice "Go Back To Main Menu?", -> {main_menu}
         end
     end
@@ -157,7 +158,6 @@ class CLI
         winenames = Wine.where(id: wineids).pluck(:name)
         clubname = WineClub.where(id: @customer).pluck(:name)
  
-        puts clubname 
         puts "\n"
         puts winenames
         puts "\n"
@@ -176,34 +176,44 @@ class CLI
 
     def add_to_fav
         puts "\nWe're Not In School Anymore But You Still Need To Check Your Spelling"
-        puts "\nEnter Wine Club Below:"
+        puts "\nEnter Wine Club Below:\n"
 
         input = gets.chomp
 
         blue = WineClub.find_by(name: input)
-        blue = blue.wine_ids
         
-        if input != blue
-            add_to_fav
-        else 
-            purple = for green in blue do
+        if blue.name == input
+            red = blue.wine_ids
+            purple = for green in red do
                 Favorite.create(customer_id: @customer.id, wine_id: green) 
             end
             puts Wine.where(id: purple).pluck(:name)
+        else
+            add_to_fav
         end 
         main_menu
     end
 
     def delete_fav
         puts "Which Wine Would You Like To Delete \n"
-        display_fav
+        wineids = Favorite.where(customer_id: @customer).pluck(:wine_id)
+        winenames = Wine.where(id: wineids).pluck(:name)
 
+        puts "\n"
+        puts winenames
         puts "\nRemember To Check Your Spelling\n"
         input = gets.chomp
 
         blue = Wine.find_by(name: input)
-        green = Favorite.where(customer_id: @customer, wine_id: blue)
-        green[0].destroy
+        
+        if input == blue.name
+            green = Favorite.where(customer_id: @customer, wine_id: blue)
+            Favorite.find_by(id: green.ids).destroy
+
+        else 
+            fav_menu
+        end
+        fav_menu
     end
 
     def exit
