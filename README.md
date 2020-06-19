@@ -1,26 +1,31 @@
-# Mod 1 Project Outline
+Mod 1 Project Wine Club
 
-## Repo Link
-- <Attach github link here>
+Repo Link
+https://github.com/cortezd334/sea-sfo-060120-mod1-final-project
 
-## Project Idea/Misson
-- Brief summary of your project.
+Project Idea/Misson
+Welcome to Wine Club! Through our project you, the customer, are able to choose and update your wine preference, view Wine Lists that a Wine Club has to offer, view Wine Lists based off of vintage or wine preference, create your Favorite Wine List, and delete wines from your Favorite Wine List. Our project consists of 6 models in which 3 of them are our join classes, connecting Customer, Wine Club, and Wine. 
 
-## Domain
-| Student | Sorting | House |
-| ---- | ---- | ----- |
-| name: string     | house_id    | name    |
-| hometown:string  | sorting_id  | ghost   |
-| age:integer      |             | motto   |
-| points:integer   |             |         |
+Domain
 
-## User Story ( At least 4)
-1. Create
-2. Read
-3. Update
-4. Delete
+|   Customer     |  CustomerList     |   WineClub    |   WineList    |   Wine    |   Favorite    |
+| ------------------------- | -------------- | ---------------- | ------------ | ---------------- | ------------ |
+| name: string              | customer_id    | name: string     | wine_club_id | name: string     | wine_id      |
+| age: integer              | wine_club_id   | location: string | wine_id      | vintage: integer | customer_id  |
+| wine_preference: string   |                |                  |              | grape: string    |              |
+| origin_preference: string |                |                  |              | price: integer   |              |
+|                           |                |                  |              | origin: string   |              |
+|                           |                |                  |              |                  |              |
 
-## Stretch Goals:wine_lists
--
--
+
+User Story ( At least 4)
+1. Create - Create a favorite wine list
+2. Read   - Enter a wine preference and see a list of wines 
+3. Update - Update wine preference
+4. Delete - Delete a favorite wine
+
+Stretch Goals:
+- Include memberships
+- Create an input method rather than hardcoding
+- Format output responses to look better
 
