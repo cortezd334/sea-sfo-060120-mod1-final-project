@@ -20,7 +20,10 @@ Domain
 
 User Story ( At least 4)
 1. Create - Create a favorite wine list
-2. Read   - Enter a wine preference and see a list of wines 
+2. Read   - See a list of wines based off of preference
+            See a list of wines based off of vintage
+            See a Wine Club's wine list
+            View their Favorite Wines
 3. Update - Update wine preference
 4. Delete - Delete a favorite wine
 
@@ -29,3 +32,4 @@ Stretch Goals:
 - Create an input method rather than hardcoding
 - Format output responses to look better
 
+Link to video of program https://www.youtube.com/watch?v=tkyIUQlTKpQ&feature=youtu.be
