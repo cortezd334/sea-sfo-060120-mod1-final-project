@@ -10,13 +10,13 @@ Wine.destroy_all
 danira = Customer.create(name: "Danira", age: 31, wine_preference: "Red")
 zana = Customer.create(name: "Zana", age: 22, wine_preference: "White")
 gabriel = Customer.create(name: "Gabriel", age: 30, wine_preference: "Red")
-brandon = Customer.create(name: "Brandon", age: 300, wine_preference: "Red")
+brandon = Customer.create(name: "Brandon", age: 31, wine_preference: "Red")
 haleigh = Customer.create(name: "Haleigh", age: 24)
 daniel = Customer.create(name: "Daniel", age: 29)
 emiley = Customer.create(name: "Emiley", age: 28)
 soundarya = Customer.create(name: "Soundarya", age: 28)
 carly = Customer.create(name: "Carly", age: 25)
-candace = Customer.create(name:"Captain Gangsta Candace", age: 24)
+candace = Customer.create(name:"Candace", age: 24)
 ronak = Customer.create(name: "Ronak", age: 25)
 
 #woodinville
